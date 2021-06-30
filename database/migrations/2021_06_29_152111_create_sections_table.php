@@ -23,6 +23,8 @@ class CreateSectionsTable extends Migration
                     ->references('id')->on('courses')
                     ->onDelete('cascade');
 
+            $table->unsignedBigInteger('position');
+
             $table->timestamps();
         });
     }

@@ -13,6 +13,11 @@
         <!-- Styles -->
         <link rel="stylesheet" href="{{ mix('css/app.css') }}">
 
+        {{-- Fontawesome --}}
+        <link rel="stylesheet" href="{{ asset('vendor/fontawesome-free/css/all.min.css') }}">
+
+        @stack('css')
+
         @livewireStyles
 
         <!-- Scripts -->
@@ -42,5 +47,7 @@
         @stack('modals')
 
         @livewireScripts
+
+        @stack('js')
     </body>
 </html>
