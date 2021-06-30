@@ -5,7 +5,7 @@
         <x-instructor.aside-courses :course="$course" />
 
         <section class="col-span-4 text-gray-700">
-            <div class="bg-white rounded-lg shadow px-4 py-6">
+            <div class="bg-white rounded-lg shadow px-10 py-6">
 
                 <h1 class="text-2xl font-semibold">Información del curso</h1>
                 <hr class="mt-2 mb-6">

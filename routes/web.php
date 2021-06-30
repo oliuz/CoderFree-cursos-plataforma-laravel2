@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Course;
 use App\Models\Section;
 use Illuminate\Support\Facades\Route;
 
@@ -24,5 +25,20 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
 
 
 Route::get('prueba', function () {
-    return Section::count();
+    $sections = Section::where('course_id', 1)
+        ->with('lessons')
+        ->orderBy('position', 'asc')
+        ->get();
+
+    $lessons = collect();
+    foreach ($sections as $section) {
+        $lessons[] = $section->lessons->sortBy('position');
+    }
+
+    $lessons = $lessons->collapse();
+
+    return $lessons;
+    /* return $lessons->pluck('id')->search(5); */
+
+    /* return $lessons->search(2); */
 });

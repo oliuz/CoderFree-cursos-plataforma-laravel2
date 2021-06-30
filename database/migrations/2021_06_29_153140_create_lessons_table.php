@@ -24,6 +24,8 @@ class CreateLessonsTable extends Migration
                     ->references('id')->on('sections')
                     ->onDelete('cascade');
 
+            $table->unsignedBigInteger('position');
+
             $table->timestamps();
         });
     }

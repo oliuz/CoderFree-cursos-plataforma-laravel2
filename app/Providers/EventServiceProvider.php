@@ -10,6 +10,12 @@ use Illuminate\Support\Facades\Event;
 use App\Models\Section;
 use App\Observers\SectionObserver;
 
+use App\Models\Lesson;
+use App\Observers\LessonObserver;
+
+use App\Models\Course;
+use App\Observers\CourseObserver;
+
 class EventServiceProvider extends ServiceProvider
 {
     /**
@@ -31,5 +37,7 @@ class EventServiceProvider extends ServiceProvider
     public function boot()
     {
         Section::observe(SectionObserver::class);
+        Lesson::observe(LessonObserver::class);
+        Course::observe(CourseObserver::class);
     }
 }

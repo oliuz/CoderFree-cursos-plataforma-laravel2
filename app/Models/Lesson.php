@@ -12,9 +12,23 @@ class Lesson extends Model
     protected $fillable = ['name', 'video', 'section_id'];
 
     //Accesores
-    public function getPositionAttribute(){
+    public function getOrderAttribute(){
         $course = $this->section->course;
-        return $course->lessons->pluck('id')->search($this->id);
+
+        $sections = Section::where('course_id', $course->id)
+        ->with('lessons')
+        ->orderBy('position', 'asc')
+        ->get();
+
+        $lessons = collect();
+
+        foreach ($sections as $section) {
+            $lessons[] = $section->lessons->sortBy('position');
+        }
+
+        $lessons = $lessons->collapse();
+
+        return $lessons->pluck('id')->search($this->id) + 1;
     }
 
     //Relaicion uno a uno

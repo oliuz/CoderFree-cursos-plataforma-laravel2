@@ -15,4 +15,18 @@ class SectionObserver
 
     }
 
+    public function deleted(Section $section){
+        $sections = Section::where('course_id', $section->course->id)
+        ->orderBy('position', 'asc')
+        ->get();
+
+        $i = 1;
+
+        foreach ($sections as $section) {
+            $section->position = $i;
+            $section->save();
+            $i++;
+        }
+    }
+
 }
