@@ -8,6 +8,8 @@ use Livewire\Component;
 class ShowLessons extends Component
 {
 
+    public $open = false;
+
     public $section, $lessons;
 
     public $showFormCreate = false;

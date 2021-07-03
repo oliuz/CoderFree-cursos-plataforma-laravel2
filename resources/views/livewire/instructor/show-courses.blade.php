@@ -1,5 +1,7 @@
 <div>
+
     <x-container class="py-8">
+
         <ul class="space-y-4 text-gray-700">
             
             @forelse ($courses as $course)

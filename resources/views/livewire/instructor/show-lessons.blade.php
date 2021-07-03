@@ -18,6 +18,7 @@
             }
         }
     });">
+    
         @foreach ($lessons as $lesson)
             <li data-id="{{$lesson->id}}" class="bg-white rounded-lg shadow-lg mb-4 lesson">
                 <div class="px-6 py-4 cursor-move flex justify-between items-center">
@@ -37,7 +38,7 @@
         @endforeach 
     </ul>
     
-
+    {{-- Nueva lección --}}
     <div x-data="{open: @entangle('showFormCreate').defer}">
         <div x-on:click="open = !open"
             class="h-6 w-12 -ml-4 bg-indigo-200 flex items-center justify-center cursor-pointer"
@@ -69,4 +70,30 @@
             </div>
         </form>
     </div>
+
+    {{-- Modal editar --}}
+
+    <x-jet-dialog-modal>
+        <x-slot name="title">
+            Editar seccion
+        </x-slot>
+
+        <x-slot name="content">
+            <x-jet-label>
+                Nombre
+            </x-jet-label>
+            <x-jet-input type="text" wire:model="formEdit.name" class="w-full" />
+            <x-jet-input-error for="formEdit.name" />
+        </x-slot>
+
+        <x-slot name="footer">
+            <x-jet-danger-button wire:click="cancelEdit" wire:loading.attr="disabled" wire:target="cancelEdit">
+                Cancelar
+            </x-jet-danger-button>
+
+            <x-jet-button wire:click="update" wire:loading.attr="disabled" wire:target="update">
+                Actualizar
+            </x-jet-button>
+        </x-slot>
+    </x-jet-dialog-modal>
 </div>

@@ -9,92 +9,100 @@ use Livewire\Component;
 
 class CurriculumCourse extends Component
 {
-    public $course, $sections ,$section;
 
-    public $showFormCreate = false;
-    public $formCreate = [
-        'name' => null
+    public $course, $sections, $section;
+
+    protected $listeners = ['deleteSection', 'deleteLesson'];
+
+    protected $validationAttributes = [
+        'formCreateSection.name' => 'nombre',
+        'formEditSection.name' => 'nombre',
+        'formEditLesson.name' => 'required'
     ];
-
-    public $showFormEdit = false;
-    public $formEdit = [
-        'name' => null
-    ];
-
-    protected $listeners = ['delete', 'sortSections', 'sortLessons', 'deleteLesson'];
 
     public function mount(Course $course){
-
         $this->course = $course;
         $this->getSections();
-
     }
+
+    /* Section */
+
+    public $formCreateSection=[
+        'open' => false,
+        'name' => null
+    ];
+
+    public $formEditSection=[
+        'open' => false,
+        'name' => null
+    ];
 
     public function getSections(){
         $this->sections = Section::where('course_id', $this->course->id)
-        ->orderBy('position', 'asc')
-        ->get();
+            ->orderBy('position', 'asc')
+            ->get();
     }
 
-    public function store(){
+    public function storeSection(){
         $this->validate([
-            "formCreate.name" => 'required'
-        ], 
-        [],
-        ['formCreate.name' => 'nombre']);
+            'formCreateSection.name' => 'required'
+        ]);
 
         $this->course->sections()->create([
-            'name' => $this->formCreate['name']
+            'name' => $this->formCreateSection['name']
         ]);
 
-        $this->reset(['formCreate', 'showFormCreate']);
+        $this->reset(['formCreateSection']);
 
         $this->getSections();
     }
 
-    public function edit(Section $section){
+    public function editSection(Section $section){
 
-        $this->resetValidation('formEdit.name');
+        $this->resetValidation('formEditSection.name');
 
         $this->section = $section;
-        $this->showFormEdit = true;
-        $this->formEdit['name'] = $section->name;
+        $this->formEditSection['open'] = true;
+        $this->formEditSection['name'] = $section->name;
     }
 
-   
-
-    public function update(){
-
+    public function updateSection(){
         $this->validate([
-            'formEdit.name' => 'required'
-        ],
-        [],
-        [
-            'formEdit.name' => 'nombre'
+            'formEditSection.name' => 'required'
         ]);
 
-        $this->section->name = $this->formEdit['name'];
+        $this->section->name = $this->formEditSection['name'];
         $this->section->save();
 
-        $this->reset(['formEdit', 'section', 'showFormEdit']);
+        $this->reset(['formEditSection', 'section']);
 
         $this->getSections();
     }
 
-    public function delete(Section $section){
+    public function cancelEditSection(){
+        $this->formEditSection['open'] = false;
+    }
+
+    public function deleteSection(Section $section){
         $section->delete();
         $this->getSections();
     }
 
+    /* Lesson */
     public function deleteLesson(Lesson $lesson){
         $lesson->delete();
 
         $this->emit('getLessons');
     }
+    
 
-    public function cancelEdit(){
-        $this->reset('showFormEdit');
-    }
+    /* 
+    
+
+    protected $listeners = ['delete', 'sortSections', 'sortLessons', 'deleteLesson'];
+
+    
+
 
     public function sortSections($sorts){
 
@@ -125,7 +133,7 @@ class CurriculumCourse extends Component
 
         $this->emit('getLessons');
         
-    }
+    } */
 
     public function render()
     {
