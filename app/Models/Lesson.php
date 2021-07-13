@@ -9,7 +9,7 @@ class Lesson extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'video', 'section_id'];
+    protected $fillable = ['name', 'url', 'section_id'];
 
     //Accesores
     public function getOrderAttribute(){

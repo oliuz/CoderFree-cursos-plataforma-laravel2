@@ -1,7 +1,7 @@
 <div>
     <ul>
         @foreach ($lessons as $lesson)
-            <li data-id="{{ $lesson->id }}" class="bg-white rounded-lg shadow-lg mb-4 lesson">
+            <li data-id="{{ $lesson->id }}" wire:key="lesson-{{$lesson->id}}" class="bg-white rounded-lg shadow-lg mb-4 lesson">
                 {{-- Título de la lección --}}
                 <div class="px-6 py-4 cursor-move flex justify-between items-center">
 
@@ -10,23 +10,21 @@
                         {{ $lesson->order }}: {{ $lesson->name }}
                     </h1>
 
-    
+
 
                     <div class="text-gray-600 actions hidden text-sm">
-                        <i wire:click="editLesson({{ $lesson->id }})"
-                            class="fas fa-edit cursor-pointer"
-                            wire:loading.class="text-blue-600"
-                            wire:target="editLesson({{ $lesson->id }})"></i>
+                        <i wire:click="editLesson({{ $lesson->id }})" class="fas fa-edit cursor-pointer"
+                            wire:loading.class="text-blue-600" wire:target="editLesson({{ $lesson->id }})"></i>
                         <i wire:click="$emit('delete-lesson', {{ $lesson->id }})"
-                            class="fas fa-trash ml-2 cursor-pointer"
-                            wire:loading.class="text-red-600"
+                            class="fas fa-trash ml-2 cursor-pointer" wire:loading.class="text-red-600"
                             wire:target="editLesson({{ $lesson->id }})"></i>
                     </div>
 
                 </div>
 
+                {{-- Detalle de la lección --}}
                 <div class="px-6 pb-4">
-                    <ul class="flex border-b border-gray-200 font-semibold text-gray-500 mb-2">
+                    <ul class="flex border-b border-gray-200 font-semibold text-gray-500 mb-4">
                         <li class="mr-6 border-b-2 border-indigo-500">
                             <a class="inline-block pb-2 text-indigo-500 cursor-pointer">
                                 Video
@@ -44,9 +42,12 @@
                         </li>
                     </ul>
 
-                    {{$video}}
-
-                    <input wire:model="video" type="file">
+                    {{-- video --}}
+                    <div>
+                        @livewire('instructor.video-lesson', ['lesson' => $lesson], key('video-lesson-' . $lesson->id))
+                    </div>
+                    
+      
                 </div>
             </li>
         @endforeach
@@ -60,8 +61,8 @@
             <i class="-ml-2 text-sm fas fa-plus transition duration-300" :class="{'transform rotate-45': open}"></i>
         </div>
 
-        <form wire:submit.prevent="storeLesson()"
-            class="bg-white rounded-lg shadow-lg p-6 mt-4 hidden" :class="{'hidden': !open}">
+        <form wire:submit.prevent="storeLesson()" class="bg-white rounded-lg shadow-lg p-6 mt-4 hidden"
+            :class="{'hidden': !open}">
             <x-jet-label class="">
                 Nueva lección
             </x-jet-label>

@@ -5,14 +5,8 @@ namespace App\Http\Livewire\Instructor;
 use App\Models\Lesson;
 use Livewire\Component;
 
-use Livewire\WithFileUploads;
-
 class LessonsCourse extends Component
 {
-
-    use WithFileUploads;
-
-    public $video;
 
     public $section, $lessons, $lesson;
 
